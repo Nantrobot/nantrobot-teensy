@@ -222,7 +222,8 @@ const double sigma_mesure=15;//en mm NE PAS définir par test : vérifier la var
 const double telemeter_decX=-30;//telemeter decX in robot frame 
 const double telemeter_decY= -5;//telemeter decY in robot frame
 const double longueur=3000;//longueur du terrain en mm
-const double largeur=2000;//largeur du terrain en mm 
+const double largeur=2000;//largeur du terrain en mm
+const double demi_support_balises = 40;//demi-largeur du support des balises
 
 //-------------------------Variables consignes-----------------------
 
@@ -431,9 +432,9 @@ void setup(){
         0    , sigmaY*sigmaY,        0,
         0    ,    0  ,  sigmaTheta*sigmaTheta;     
     
-  beacon[0].map_frame_coords << largeur/2,0;
-  beacon[1].map_frame_coords << 0,longueur;
-  beacon[2].map_frame_coords << largeur,longueur;
+  beacon[0].map_frame_coords << largeur/2, -demi_support_balises;
+  beacon[1].map_frame_coords << -demi_support_balises, longueur + demi_support_balises;
+  beacon[2].map_frame_coords << largeur + demi_support_balises, longueur + demi_support_balises;
 
   /*
   beacon[0].map_frame_coords << 0,longueur/4;
