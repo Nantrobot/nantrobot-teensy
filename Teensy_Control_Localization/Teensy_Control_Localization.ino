@@ -501,33 +501,6 @@ void loop(){
 
 //--------------------FONCTIONS AUXILIAIRES ET ROUTINES INTERRUPTIONS-----------------------
 
-
-//Routine d'interruption 
-void isr(void){
-  tickR=RightEnc.read();
-  tickL=LeftEnc.read();
-  if(mode==1){
-    isr1();
-  }else{
-    isr0();
-  }
-  tickRprec=tickR;
-  tickLprec=tickL;
-}
-
-//Asservissement haut niveau pour le mode 0 -tourne 10 fois moins vite que le haut niveau
-void isrh(void){
-  double erreurX=Xcons-(X+a*cos(theta));
-  double erreurY=Ycons-(Y+a*sin(theta));
-  double v1=kpe*erreurX;
-  double v2=kpe*erreurY;
-  double Vcons=cos(theta)*v1+sin(theta)*v2;
-  double Omegacons=(-sin(theta)*v1+cos(theta)*v2)/a;
-  omegacg=(Vcons+L*Omegacons)/Rcg;
-  omegacd=(Vcons-L*Omegacons)/Rcd;
-}
-
-
 //Asservissement bas niveau pour le mode 0
 void isr0(void){//
   if(cnt>=10){
@@ -607,6 +580,31 @@ void isr1(void){
     digitalWrite(motorg,HIGH);
     analogWrite(enableg,-cmdL);
   }
+}
+
+//Routine d'interruption 
+void isr(void){
+  tickR=RightEnc.read();
+  tickL=LeftEnc.read();
+  if(mode==1){
+    isr1();
+  }else{
+    isr0();
+  }
+  tickRprec=tickR;
+  tickLprec=tickL;
+}
+
+//Asservissement haut niveau pour le mode 0 -tourne 10 fois moins vite que le haut niveau
+void isrh(void){
+  double erreurX=Xcons-(X+a*cos(theta));
+  double erreurY=Ycons-(Y+a*sin(theta));
+  double v1=kpe*erreurX;
+  double v2=kpe*erreurY;
+  double Vcons=cos(theta)*v1+sin(theta)*v2;
+  double Omegacons=(-sin(theta)*v1+cos(theta)*v2)/a;
+  omegacg=(Vcons+L*Omegacons)/Rcg;
+  omegacd=(Vcons-L*Omegacons)/Rcd;
 }
 
 void odometry(void){
